@@ -7,103 +7,99 @@
 
 import SwiftUI
 
-private enum Constant {
-    static let movedImageWidth = 300.0
-    static let defaultImageHeight = 240.0
+enum Constant {
+    static let imageWidth = 120.0
+    static let imageHeight = 100.0
+    static let longPressMinimumDuration = 0.7
 }
 
 struct ImageBoardView<T: View>: View {
 
     let embeddedView: T
-    let index: Int
+    let imageURL: URL
 
-    @State private var wasImageDragged = false
-    @State private var isDraggingImage: Bool = false
-    @State private var imageLocation: CGPoint = .zero
+    @GestureState private var dragState = DragState.inactive
+    @State private var imageOffset = CGSize.zero
 
-    @Environment(\.displayScale) private var displayScale
-    @Environment(\.verticalSizeClass) var verticalSizeClass
+    enum DragState {
+        case inactive
+        case pressing
+        case dragging(translation: CGSize)
+    }
 
     var body: some View {
-        GeometryReader { geo in
-            if !wasImageDragged {
-                if verticalSizeClass == .regular {
-                    VStack {
-                        Color(.clear)
-                            .frame(height: Constant.defaultImageHeight)
-                            .overlay {
-                                AsyncImage(url: urlForImage(ofWidth: geo.size.width)) { $0
-                                    .resizable()
-                                    .aspectRatio(contentMode: .fill)
-                                    .frame(height: Constant.defaultImageHeight + geo.safeAreaInsets.top)
-                                    .clipped()
-                                    .ignoresSafeArea()
-                                    .onLongPressGesture {
-                                        wasImageDragged = true
-                                    }
-                                } placeholder: {
-                                    ProgressView()
-                                }
-                            }
-                            .onAppear {
-                                imageLocation = .init(x: geo.size.width / 2, y: geo.size.height / 2)
-                            }
-
-                        embeddedView
-                    }
-                } else {
-                    HStack {
-                        AsyncImage(url: urlForImage(ofWidth: geo.size.width)) { $0
-                            .resizable()
-                            .aspectRatio(contentMode: .fill)
-                            .frame(width: geo.size.width / 2)
-                            .clipped()
-                            .onLongPressGesture {
-                                wasImageDragged = true
-                            }
-                        } placeholder: {
-                            ProgressView()
-                        }
-                        .onAppear {
-                            imageLocation = .init(x: geo.size.width / 2, y: geo.size.height / 2)
-                        }
-
-                        embeddedView
-                    }
+        let longPressDrag = LongPressGesture(minimumDuration: Constant.longPressMinimumDuration)
+            .sequenced(before: DragGesture())
+            .updating($dragState) { value, state, transaction in
+                switch value {
+                case .first(true):
+                    state = .pressing
+                case .second(true, let drag):
+                    state = .dragging(translation: drag?.translation ?? .zero)
+                default:
+                    state = .inactive
                 }
-            } else {
+            }
+            .onEnded { value in
+                guard case .second(true, let drag?) = value else { return }
+                self.imageOffset.width += drag.translation.width
+                self.imageOffset.height += drag.translation.height
+            }
+        
+        GeometryReader { geo in
+//            if !dragState.isActive && imageOffset == .zero {
+//                VStack {
+//                    AsyncImage(url: imageURL) { $0
+//                        .resizable()
+//                        .aspectRatio(contentMode: .fill)
+//                        .frame(width: geo.size.width, height: Constant.imageHeight)
+//                        .clipped()
+//                        .gesture(longPressDrag)
+//                    } placeholder: {
+//                        ProgressView()
+//                    }
+//
+//                    embeddedView
+//                }
+//            } else {
                 ZStack {
                     embeddedView
 
-                    AsyncImage(url: urlForImage(ofWidth: geo.size.width)) { $0
+                    AsyncImage(url: imageURL) { $0
                         .resizable()
                         .aspectRatio(contentMode: .fit)
-                        .frame(width: Constant.movedImageWidth)
-                        .position(imageLocation)
-                        .clipped()
-                        .gesture(dragGesture)
+                        .border(Color.green, width: dragState.isDragging ? 1 : 0)
+                        .frame(width: Constant.imageWidth, height: Constant.imageWidth)
+                        .offset(
+                            x: imageOffset.width + dragState.translation.width,
+                            y: imageOffset.height + dragState.translation.height
+                        )
+                        .gesture(longPressDrag)
                     } placeholder: {
                         ProgressView()
                     }
                 }
-            }
+//            }
+        }
+    }
+}
+
+extension ImageBoardView.DragState {
+
+    var translation: CGSize {
+        if case .dragging(let translation) = self {
+            translation
+        } else {
+            .zero
         }
     }
 
-    func urlForImage(ofWidth width: CGFloat) -> URL! {
-        URL(string: "https:/picsum.photos/id/\(index + 10)/\(Int(width * displayScale))")
+    var isActive: Bool {
+        if case .inactive = self { false } else { true }
     }
 
-    var dragGesture: some Gesture {
-        DragGesture()
-            .onChanged { value in
-                self.imageLocation = value.location
-                self.isDraggingImage = true
-            }
-
-            .onEnded { _ in
-                self.isDraggingImage = false
-            }
+    var isDragging: Bool {
+        if case .dragging = self { true } else { false }
     }
 }
 
@@ -126,6 +122,6 @@ import Model
         AffectedArea(id: "2", name: "Area 2", state: "NY", isRadarStation: false),
         AffectedArea(id: "3", name: "Area 3", state: "CA", isRadarStation: true)
     ]))
-    let alertDetailsView = AlertDetailsView(model: model, index: 0)
-    return ImageBoardView(embeddedView: alertDetailsView, index: 0)
+    let alertDetailsView = AlertDetailsView(model: model)
+    return ImageBoardView(embeddedView: alertDetailsView, imageURL: URL(string: "https:/picsum.photos/id/10/300")!)
 }

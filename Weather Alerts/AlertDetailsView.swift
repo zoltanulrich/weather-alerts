@@ -11,7 +11,6 @@ import Model
 struct AlertDetailsView: View {
 
     let model: AlertDetailsModel
-    let index: Int
 
     @State private var isDescriptionExpanded = false
     @State private var areInstructionsExpanded = false
@@ -111,5 +110,5 @@ struct AlertDetailsView: View {
         AffectedArea(id: "2", name: "Area 2", state: "NY", isRadarStation: false),
         AffectedArea(id: "3", name: "Area 3", state: "CA", isRadarStation: true)
     ]))
-    return AlertDetailsView(model: model, index: 0)
+    return AlertDetailsView(model: model)
 }

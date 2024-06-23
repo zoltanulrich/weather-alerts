@@ -9,7 +9,8 @@ import SwiftUI
 
 struct AlertsListView: View {
 
-    @Environment(AlertsListModel.self) var model 
+    @Environment(AlertsListModel.self) var model
+    @Environment(\.displayScale) private var displayScale
 
     var body: some View {
         NavigationStack {
@@ -27,7 +28,7 @@ struct AlertsListView: View {
                 case .available(let bulletin):
                     ForEach(Array(bulletin.alerts.enumerated()), id: \.1.id) { index, alert in
                         NavigationLink {
-                            ImageBoardView(embeddedView: AlertDetailsView(model: .init(alert: alert), index: index), index: index)
+                            ImageBoardView(embeddedView: AlertDetailsView(model: .init(alert: alert)), imageURL: urlForImage(ofWidth: Constant.imageWidth, index: index))
                         } label: {
                             AlertView(alert: alert, index: index)
                         }
@@ -50,6 +51,10 @@ struct AlertsListView: View {
             await model.fetchBulletin()
         }
     }
+
+    func urlForImage(ofWidth width: CGFloat, index: Int) -> URL! {
+        URL(string: "https:/picsum.photos/id/\(index + 10)/\(Int(width * displayScale))")
+    }
 }
 
 
@@ -60,7 +65,7 @@ import Model
         WeatherAlert(id: "1",
                      event: "Flash Flood Warning",
                      effective: Date().addingTimeInterval(-1 * 24 * 86400),
-                     expires: Date().addingTimeInterval(+2 * 24 * 86400),
+                     expires: Date().addingTimeInterval(2 * 24 * 86400),
                      severity: "Severe",
                      certanity: "High",
                      urgency: "Immediate",
@@ -71,7 +76,7 @@ import Model
         WeatherAlert(id: "1",
                      event: "Flash Flood Warning",
                      effective: Date().addingTimeInterval(-1 * 24 * 86400),
-                     expires: Date().addingTimeInterval(+2 * 24 * 86400),
+                     expires: Date().addingTimeInterval(2 * 24 * 86400),
                      severity: "Severe",
                      certanity: "High",
                      urgency: "Immediate",
