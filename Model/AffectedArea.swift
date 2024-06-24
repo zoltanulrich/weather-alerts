@@ -7,19 +7,22 @@
 
 import Foundation
 
-public struct AffectedArea: Identifiable, Decodable {
+public struct AffectedArea: Identifiable {
 
     public var id: String
     public let name: String
     public let state: String?
     public let isRadarStation: Bool
 
-    public init(id: String, name: String, state: String?, isRadarStation: Bool) {
+    init(id: String, name: String, state: String?, isRadarStation: Bool) {
         self.id = id
         self.name = name
         self.state = state
         self.isRadarStation = isRadarStation
     }
+}
+
+extension AffectedArea: Decodable {
 
     private enum CodingKeys: String, CodingKey {
         case id

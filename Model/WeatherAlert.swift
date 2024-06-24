@@ -25,7 +25,7 @@ public struct WeatherAlert {
     
     public let affectedAreasURLs: [URL]
 
-    public init(id: String, event: String, effective: Date, expires: Date, severity: String, certanity: String?, urgency: String, senderName: String, description: String, instruction: String?, affectedAreasURLs: [URL]) {
+    init(id: String, event: String, effective: Date, expires: Date, severity: String, certanity: String?, urgency: String, senderName: String, description: String, instruction: String?, affectedAreasURLs: [URL]) {
         self.id = id
         self.event = event
         self.effective = effective

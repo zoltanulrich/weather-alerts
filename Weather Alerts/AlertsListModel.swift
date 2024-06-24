@@ -27,8 +27,6 @@ final class AlertsListModel {
 
     @MainActor
     func fetchBulletin() async {
-        state = .isLoading
-
         do {
             let bulletin = try await service.fetchActiveAlerts()
             state = .available(bulletin)
