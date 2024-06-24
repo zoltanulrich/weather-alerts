@@ -11,7 +11,6 @@ import Model
 struct AlertDetailsView: View {
 
     let model: AlertDetailsModel
-    let index: Int
 
     @State private var isDescriptionExpanded = false
     @State private var areInstructionsExpanded = false
@@ -42,8 +41,7 @@ struct AlertDetailsView: View {
                         .font(.headline)
                     Text(model.alert.description)
                         .lineLimit(isDescriptionExpanded ? nil : 2)
-                        .animation(.easeInOut, value: isDescriptionExpanded)
-                        .onTapGesture { isDescriptionExpanded = true }
+                        .onTapGesture { isDescriptionExpanded.toggle() }
                 }
 
                 if let instruction = model.alert.instruction {
@@ -52,8 +50,7 @@ struct AlertDetailsView: View {
                             .font(.headline)
                         Text(instruction)
                             .lineLimit(areInstructionsExpanded ? nil : 2)
-                            .animation(.easeInOut, value: areInstructionsExpanded)
-                            .onTapGesture { areInstructionsExpanded = true }
+                            .onTapGesture { areInstructionsExpanded.toggle() }
                     }
                 }
 
@@ -76,7 +73,10 @@ struct AlertDetailsView: View {
                 default:
                     EmptyView()
                 }
-            }.padding(EdgeInsets(top: 0, leading: 16, bottom: 0, trailing: 16))
+            }
+            .padding(EdgeInsets(top: 0, leading: 16, bottom: 0, trailing: 16))
+            .animation(.default, value: isDescriptionExpanded)
+            .animation(.default, value: areInstructionsExpanded)
         }
         .task {
             await model.fetchAffectedAreas()
@@ -93,6 +93,9 @@ struct AlertDetailsView: View {
         return attributes.joined(separator: " | ")
     }
 }
+
+#if DEBUG
+@testable import Model
 
 #Preview {
     let alert = WeatherAlert(id: "1",
@@ -111,5 +114,7 @@ struct AlertDetailsView: View {
         AffectedArea(id: "2", name: "Area 2", state: "NY", isRadarStation: false),
         AffectedArea(id: "3", name: "Area 3", state: "CA", isRadarStation: true)
     ]))
-    return AlertDetailsView(model: model, index: 0)
+    return AlertDetailsView(model: model)
 }
+
+#endif

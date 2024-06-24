@@ -12,7 +12,7 @@ public struct WeatherAlertsBulletin {
     public let date: Date
     public let alerts: [WeatherAlert]
 
-    public init(date: Date, alerts: [WeatherAlert]) {
+    init(date: Date, alerts: [WeatherAlert]) {
         self.date = date
         self.alerts = alerts
     }

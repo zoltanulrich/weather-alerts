@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		7A98580B2C29FE1A00C242BF /* ImageURLProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A98580A2C29FE1A00C242BF /* ImageURLProvider.swift */; };
+		7A98580D2C2A055000C242BF /* IndexedImageURLProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A98580C2C2A055000C242BF /* IndexedImageURLProvider.swift */; };
 		7ADED5392C26B07A000826E0 /* WeatherAlertsApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ADED5382C26B07A000826E0 /* WeatherAlertsApp.swift */; };
 		7ADED53B2C26B07A000826E0 /* AlertsListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ADED53A2C26B07A000826E0 /* AlertsListView.swift */; };
 		7ADED53D2C26B07B000826E0 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7ADED53C2C26B07B000826E0 /* Assets.xcassets */; };
@@ -21,7 +23,7 @@
 		7ADED5702C26B522000826E0 /* WeatherAlertsBulletin.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ADED56F2C26B522000826E0 /* WeatherAlertsBulletin.swift */; };
 		7ADED5722C26B8FA000826E0 /* ServiceFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ADED5712C26B8FA000826E0 /* ServiceFactory.swift */; };
 		7ADED5742C26B970000826E0 /* AlertsListModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ADED5732C26B970000826E0 /* AlertsListModel.swift */; };
-		7AF605632C26C1F1008B8D98 /* AlertView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AF605622C26C1F1008B8D98 /* AlertView.swift */; };
+		7AF605632C26C1F1008B8D98 /* AlertRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AF605622C26C1F1008B8D98 /* AlertRowView.swift */; };
 		7AF605652C26D25E008B8D98 /* AlertDetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AF605642C26D25E008B8D98 /* AlertDetailsView.swift */; };
 		7AF605672C26E114008B8D98 /* AlertDetailsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AF605662C26E114008B8D98 /* AlertDetailsModel.swift */; };
 		7AF605692C26E184008B8D98 /* AffectedArea.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AF605682C26E184008B8D98 /* AffectedArea.swift */; };
@@ -55,6 +57,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		7A98580A2C29FE1A00C242BF /* ImageURLProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageURLProvider.swift; sourceTree = "<group>"; };
+		7A98580C2C2A055000C242BF /* IndexedImageURLProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IndexedImageURLProvider.swift; sourceTree = "<group>"; };
 		7ADED5352C26B07A000826E0 /* Weather Alerts.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Weather Alerts.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		7ADED5382C26B07A000826E0 /* WeatherAlertsApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherAlertsApp.swift; sourceTree = "<group>"; };
 		7ADED53A2C26B07A000826E0 /* AlertsListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertsListView.swift; sourceTree = "<group>"; };
@@ -69,7 +73,7 @@
 		7ADED56F2C26B522000826E0 /* WeatherAlertsBulletin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherAlertsBulletin.swift; sourceTree = "<group>"; };
 		7ADED5712C26B8FA000826E0 /* ServiceFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServiceFactory.swift; sourceTree = "<group>"; };
 		7ADED5732C26B970000826E0 /* AlertsListModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertsListModel.swift; sourceTree = "<group>"; };
-		7AF605622C26C1F1008B8D98 /* AlertView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertView.swift; sourceTree = "<group>"; };
+		7AF605622C26C1F1008B8D98 /* AlertRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertRowView.swift; sourceTree = "<group>"; };
 		7AF605642C26D25E008B8D98 /* AlertDetailsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertDetailsView.swift; sourceTree = "<group>"; };
 		7AF605662C26E114008B8D98 /* AlertDetailsModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertDetailsModel.swift; sourceTree = "<group>"; };
 		7AF605682C26E184008B8D98 /* AffectedArea.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AffectedArea.swift; sourceTree = "<group>"; };
@@ -121,12 +125,14 @@
 				7ADED5382C26B07A000826E0 /* WeatherAlertsApp.swift */,
 				7ADED53A2C26B07A000826E0 /* AlertsListView.swift */,
 				7ADED5732C26B970000826E0 /* AlertsListModel.swift */,
-				7AF605622C26C1F1008B8D98 /* AlertView.swift */,
+				7AF605622C26C1F1008B8D98 /* AlertRowView.swift */,
 				7AF605642C26D25E008B8D98 /* AlertDetailsView.swift */,
 				7AF605662C26E114008B8D98 /* AlertDetailsModel.swift */,
 				7AF6056A2C26E8F8008B8D98 /* AffectedAreaView.swift */,
 				7AF6056C2C275356008B8D98 /* ImageBoardView.swift */,
 				7AF6056E2C27674E008B8D98 /* WeatherAlert+Formatting.swift */,
+				7A98580A2C29FE1A00C242BF /* ImageURLProvider.swift */,
+				7A98580C2C2A055000C242BF /* IndexedImageURLProvider.swift */,
 				7ADED53C2C26B07B000826E0 /* Assets.xcassets */,
 				7ADED53E2C26B07B000826E0 /* Preview Content */,
 			);
@@ -268,9 +274,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7A98580D2C2A055000C242BF /* IndexedImageURLProvider.swift in Sources */,
 				7ADED5742C26B970000826E0 /* AlertsListModel.swift in Sources */,
 				7AF605652C26D25E008B8D98 /* AlertDetailsView.swift in Sources */,
-				7AF605632C26C1F1008B8D98 /* AlertView.swift in Sources */,
+				7A98580B2C29FE1A00C242BF /* ImageURLProvider.swift in Sources */,
+				7AF605632C26C1F1008B8D98 /* AlertRowView.swift in Sources */,
 				7AF605672C26E114008B8D98 /* AlertDetailsModel.swift in Sources */,
 				7ADED53B2C26B07A000826E0 /* AlertsListView.swift in Sources */,
 				7AF6056F2C27674E008B8D98 /* WeatherAlert+Formatting.swift in Sources */,

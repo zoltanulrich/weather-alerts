@@ -9,9 +9,15 @@ import SwiftUI
 
 struct AlertsListView: View {
 
-    @Environment(AlertsListModel.self) var model 
+    @Environment(AlertsListModel.self) var model
+    @Environment(\.displayScale) private var displayScale
+    @Environment(\.scenePhase) var scenePhase
 
     var body: some View {
+        let imageProvider: (_ index: Int) -> ImageURLProvider = {
+            IndexedImageURLProvider(index: $0, scale: Int(displayScale))
+        }
+
         NavigationStack {
             List {
                 switch model.state {
@@ -27,9 +33,10 @@ struct AlertsListView: View {
                 case .available(let bulletin):
                     ForEach(Array(bulletin.alerts.enumerated()), id: \.1.id) { index, alert in
                         NavigationLink {
-                            ImageBoardView(embeddedView: AlertDetailsView(model: .init(alert: alert), index: index), index: index)
+                            ImageBoardView(embeddedView: AlertDetailsView(model: .init(alert: alert)),
+                                           imageProvider: imageProvider(index + 10))
                         } label: {
-                            AlertView(alert: alert, index: index)
+                            AlertRowView(alert: alert, imageProvider: imageProvider(index + 10))
                         }
                     }.listRowInsets(.none)
 
@@ -46,21 +53,29 @@ struct AlertsListView: View {
             }
             .navigationTitle("Active Alerts")
         }
-        .task {
-            await model.fetchBulletin()
+        .onChange(of: scenePhase) { oldPhase, newPhase in
+            if newPhase == .active {
+                Task {
+                    await refresh()
+                }
+            }
         }
+    }
+
+    private func refresh() async {
+        await model.fetchBulletin()
     }
 }
 
-
-import Model
+#if DEBUG
+@testable import Model
 
 #Preview {
     let bulletin = WeatherAlertsBulletin(date: Date(), alerts: [
         WeatherAlert(id: "1",
                      event: "Flash Flood Warning",
                      effective: Date().addingTimeInterval(-1 * 24 * 86400),
-                     expires: Date().addingTimeInterval(+2 * 24 * 86400),
+                     expires: Date().addingTimeInterval(2 * 24 * 86400),
                      severity: "Severe",
                      certanity: "High",
                      urgency: "Immediate",
@@ -68,10 +83,10 @@ import Model
                      description: "A flash flood warning is in effect for the area",
                      instruction: "Move to higher ground immediately",
                      affectedAreasURLs: [URL(string: "https://example.com")!]),
-        WeatherAlert(id: "1",
+        WeatherAlert(id: "2",
                      event: "Flash Flood Warning",
                      effective: Date().addingTimeInterval(-1 * 24 * 86400),
-                     expires: Date().addingTimeInterval(+2 * 24 * 86400),
+                     expires: Date().addingTimeInterval(2 * 24 * 86400),
                      severity: "Severe",
                      certanity: "High",
                      urgency: "Immediate",
@@ -86,3 +101,5 @@ import Model
     return AlertsListView()
         .environment(model)
 }
+
+#endif

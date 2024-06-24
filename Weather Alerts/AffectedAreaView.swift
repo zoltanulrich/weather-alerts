@@ -27,7 +27,11 @@ struct AffectedAreaView: View {
     }
 }
 
-#Preview(traits: .sizeThatFitsLayout) {
+#if DEBUG
+@testable import Model
 
+#Preview(traits: .sizeThatFitsLayout) {
     AffectedAreaView(area: .init(id: "1", name: "San Francisco", state: "CA", isRadarStation: true))
 }
+
+#endif

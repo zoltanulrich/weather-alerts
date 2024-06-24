@@ -1,5 +1,5 @@
 //
-//  AlertView.swift
+//  AlertRowView.swift
 //  Weather Alerts
 //
 //  Created by Zoltan Ulrich on 22.06.2024.
@@ -8,14 +8,18 @@
 import SwiftUI
 import Model
 
-struct AlertView: View {
+private enum Constant {
+    static let imageWidth = 144
+}
+
+struct AlertRowView: View {
 
     let alert: WeatherAlert
-    let index: Int
+    let imageProvider: ImageURLProvider
 
     var body: some View {
         HStack(alignment: .center) {
-            AsyncImage(url: .init(string: "https:/picsum.photos/id/\(index + 10)/144")!) { $0
+            AsyncImage(url: imageProvider.imageURL(width: Constant.imageWidth)) { $0
                 .resizable()
                 .aspectRatio(contentMode: .fill)
             } placeholder: {
@@ -23,19 +27,22 @@ struct AlertView: View {
             }
             .frame(width: 72)
             .clipped()
-            .padding(EdgeInsets(top: -4, leading: -16, bottom: -4, trailing: 0))
+            .padding(EdgeInsets(top: -4, leading: -20, bottom: -4, trailing: 0))
 
             VStack(alignment: .leading) {
                 Text(alert.event)
                     .font(.headline)
                 Text("\(alert.startDate) through \(alert.endDate)")
                     .font(.subheadline)
+                Text("Source: \(alert.senderName)")
                     .foregroundStyle(.gray)
-                Text("From \(alert.senderName)")
             }
         }
     }
 }
+
+#if DEBUG
+@testable import Model
 
 #Preview(traits: .sizeThatFitsLayout) {
     let alert = WeatherAlert(id: "1",
@@ -53,5 +60,7 @@ struct AlertView: View {
                                 URL(string: "https://www.apple.com")!
                              ])
 
-    return List { AlertView(alert: alert, index: 0).listRowInsets(.none) }
+    return List { AlertRowView(alert: alert, imageProvider: IndexedImageURLProvider(index: 10, scale: 2)).listRowInsets(.none) }
 }
+
+#endif

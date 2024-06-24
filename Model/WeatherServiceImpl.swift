@@ -30,6 +30,8 @@ final class WeatherServiceImpl: WeatherService {
             throw ServiceError.general("Invalid response")
         }
 
+        try Task.checkCancellation()
+
         switch response.statusCode {
         case 200..<300:
             let alertsResponse = try decoder.decode(AlertsResponse.self, from: data)
@@ -60,6 +62,8 @@ final class WeatherServiceImpl: WeatherService {
         guard let response = response as? HTTPURLResponse else {
             throw ServiceError.general("Invalid response")
         }
+
+        try Task.checkCancellation()
 
         switch response.statusCode {
         case 200..<300:

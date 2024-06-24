@@ -8,106 +8,145 @@
 import SwiftUI
 
 private enum Constant {
-    static let movedImageWidth = 300.0
-    static let defaultImageHeight = 240.0
+    static let headerImageHeight = 100.0
+    static let horizontalImageWidth = 200.0
+    static let thumbImageWidth = 120.0
+    static let longPressMinimumDuration = 0.7
 }
 
 struct ImageBoardView<T: View>: View {
 
     let embeddedView: T
-    let index: Int
+    let imageProvider: ImageURLProvider
 
-    @State private var wasImageDragged = false
-    @State private var isDraggingImage: Bool = false
-    @State private var imageLocation: CGPoint = .zero
-
-    @Environment(\.displayScale) private var displayScale
+    @GestureState private var dragState = DragState.inactive
+    @State private var imageOffset = CGSize.zero
+    @State private var wasImageMoved = false
+    @State private var initialPosition: CGPoint = .zero
     @Environment(\.verticalSizeClass) var verticalSizeClass
 
+    enum DragState {
+        case inactive
+        case pressing
+        case dragging(translation: CGSize)
+    }
+
     var body: some View {
+        let initialLongPressDrag = LongPressGesture(minimumDuration: Constant.longPressMinimumDuration)
+            .sequenced(before: DragGesture())
+            .updating($dragState) { value, state, transaction in
+                if case .second(true, let drag) = value, let drag, initialPosition == .zero {
+                    Task {
+                        initialPosition = drag.location
+                        wasImageMoved = true
+                    }
+                }
+            }
+
+        let longPressDrag = LongPressGesture(minimumDuration: Constant.longPressMinimumDuration)
+            .sequenced(before: DragGesture())
+            .updating($dragState) { value, state, transaction in
+                switch value {
+                case .first(true):
+                    state = .pressing
+                case .second(true, let drag):
+                    state = .dragging(translation: drag?.translation ?? .zero)
+                default:
+                    state = .inactive
+                }
+            }
+            .onEnded { value in
+                guard case .second(true, let drag?) = value else { return }
+                self.imageOffset.width += drag.translation.width
+                self.imageOffset.height += drag.translation.height
+            }
+
         GeometryReader { geo in
-            if !wasImageDragged {
+            if !wasImageMoved {
                 if verticalSizeClass == .regular {
                     VStack {
                         Color(.clear)
-                            .frame(height: Constant.defaultImageHeight)
+                            .frame(height: Constant.headerImageHeight)
                             .overlay {
-                                AsyncImage(url: urlForImage(ofWidth: geo.size.width)) { $0
+                                AsyncImage(url: imageProvider.imageURL(width: Int(geo.size.width))) { $0
                                     .resizable()
                                     .aspectRatio(contentMode: .fill)
-                                    .frame(height: Constant.defaultImageHeight + geo.safeAreaInsets.top)
+                                    .frame(height: Constant.headerImageHeight + geo.safeAreaInsets.top)
                                     .clipped()
                                     .ignoresSafeArea()
-                                    .onLongPressGesture {
-                                        wasImageDragged = true
-                                    }
+                                    .gesture(initialLongPressDrag)
                                 } placeholder: {
                                     ProgressView()
                                 }
-                            }
-                            .onAppear {
-                                imageLocation = .init(x: geo.size.width / 2, y: geo.size.height / 2)
                             }
 
                         embeddedView
                     }
                 } else {
                     HStack {
-                        AsyncImage(url: urlForImage(ofWidth: geo.size.width)) { $0
+                        AsyncImage(url: imageProvider.imageURL(width: Int(Constant.horizontalImageWidth))) { $0
                             .resizable()
                             .aspectRatio(contentMode: .fill)
-                            .frame(width: geo.size.width / 2)
+                            .frame(width: Constant.horizontalImageWidth)
                             .clipped()
-                            .onLongPressGesture {
-                                wasImageDragged = true
-                            }
+                            .gesture(initialLongPressDrag)
                         } placeholder: {
                             ProgressView()
                         }
-                        .onAppear {
-                            imageLocation = .init(x: geo.size.width / 2, y: geo.size.height / 2)
+                        
+                        ScrollView {
+                            embeddedView
                         }
-
-                        embeddedView
-                    }
+                    }.ignoresSafeArea(edges: [.leading])
                 }
             } else {
-                ZStack {
-                    embeddedView
+                ScrollView {
+                    ZStack {
+                        embeddedView
 
-                    AsyncImage(url: urlForImage(ofWidth: geo.size.width)) { $0
-                        .resizable()
-                        .aspectRatio(contentMode: .fit)
-                        .frame(width: Constant.movedImageWidth)
-                        .position(imageLocation)
-                        .clipped()
-                        .gesture(dragGesture)
-                    } placeholder: {
-                        ProgressView()
+                        AsyncImage(url: imageProvider.imageURL(width: Int(Constant.thumbImageWidth))) { $0
+                            .resizable()
+                            .aspectRatio(contentMode: .fit)
+                            .border(Color.red, width: dragState.isDragging ? 1 : 0)
+                            .frame(width: Constant.thumbImageWidth, height: Constant.thumbImageWidth)
+                            .position(initialPosition)
+                            .offset(
+                                x: imageOffset.width + dragState.translation.width,
+                                y: imageOffset.height + dragState.translation.height
+                            )
+                            .gesture(longPressDrag)
+                        } placeholder: {
+                            ProgressView()
+                        }
                     }
                 }
             }
         }
-    }
-
-    func urlForImage(ofWidth width: CGFloat) -> URL! {
-        URL(string: "https:/picsum.photos/id/\(index + 10)/\(Int(width * displayScale))")
-    }
-
-    var dragGesture: some Gesture {
-        DragGesture()
-            .onChanged { value in
-                self.imageLocation = value.location
-                self.isDraggingImage = true
-            }
-
-            .onEnded { _ in
-                self.isDraggingImage = false
-            }
+        .navigationBarTitleDisplayMode(.inline)
     }
 }
 
-import Model
+extension ImageBoardView.DragState {
+
+    var translation: CGSize {
+        if case .dragging(let translation) = self {
+            translation
+        } else {
+            .zero
+        }
+    }
+
+    var isActive: Bool {
+        if case .inactive = self { false } else { true }
+    }
+
+    var isDragging: Bool {
+        if case .dragging = self { true } else { false }
+    }
+}
+
+#if DEBUG
+@testable import Model
 
 #Preview {
     let alert = WeatherAlert(id: "1",
@@ -126,6 +165,11 @@ import Model
         AffectedArea(id: "2", name: "Area 2", state: "NY", isRadarStation: false),
         AffectedArea(id: "3", name: "Area 3", state: "CA", isRadarStation: true)
     ]))
-    let alertDetailsView = AlertDetailsView(model: model, index: 0)
-    return ImageBoardView(embeddedView: alertDetailsView, index: 0)
+    let alertDetailsView = AlertDetailsView(model: model)
+    return NavigationStack {
+        ImageBoardView(embeddedView: alertDetailsView, imageProvider: IndexedImageURLProvider(index: 10, scale: 2))
+            .navigationTitle("Alert Details")
+    }
 }
+
+#endif
