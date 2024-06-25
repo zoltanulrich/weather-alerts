@@ -1,6 +1,6 @@
 //
 //  IndexedImageURLProvider.swift
-//  Weather Alerts
+//  WeatherAlerts
 //
 //  Created by Zoltan Ulrich on 22.06.2024.
 //

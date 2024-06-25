@@ -59,7 +59,7 @@
 /* Begin PBXFileReference section */
 		7A98580A2C29FE1A00C242BF /* ImageURLProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageURLProvider.swift; sourceTree = "<group>"; };
 		7A98580C2C2A055000C242BF /* IndexedImageURLProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IndexedImageURLProvider.swift; sourceTree = "<group>"; };
-		7ADED5352C26B07A000826E0 /* Weather Alerts.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Weather Alerts.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		7ADED5352C26B07A000826E0 /* WeatherAlerts.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WeatherAlerts.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		7ADED5382C26B07A000826E0 /* WeatherAlertsApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherAlertsApp.swift; sourceTree = "<group>"; };
 		7ADED53A2C26B07A000826E0 /* AlertsListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertsListView.swift; sourceTree = "<group>"; };
 		7ADED53C2C26B07B000826E0 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -104,7 +104,7 @@
 		7ADED52C2C26B07A000826E0 = {
 			isa = PBXGroup;
 			children = (
-				7ADED5372C26B07A000826E0 /* Weather Alerts */,
+				7ADED5372C26B07A000826E0 /* WeatherAlerts */,
 				7ADED54C2C26B12C000826E0 /* Model */,
 				7ADED5362C26B07A000826E0 /* Products */,
 			);
@@ -113,13 +113,13 @@
 		7ADED5362C26B07A000826E0 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				7ADED5352C26B07A000826E0 /* Weather Alerts.app */,
+				7ADED5352C26B07A000826E0 /* WeatherAlerts.app */,
 				7ADED54B2C26B12C000826E0 /* Model.framework */,
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
-		7ADED5372C26B07A000826E0 /* Weather Alerts */ = {
+		7ADED5372C26B07A000826E0 /* WeatherAlerts */ = {
 			isa = PBXGroup;
 			children = (
 				7ADED5382C26B07A000826E0 /* WeatherAlertsApp.swift */,
@@ -136,7 +136,7 @@
 				7ADED53C2C26B07B000826E0 /* Assets.xcassets */,
 				7ADED53E2C26B07B000826E0 /* Preview Content */,
 			);
-			path = "Weather Alerts";
+			path = "WeatherAlerts";
 			sourceTree = "<group>";
 		};
 		7ADED53E2C26B07B000826E0 /* Preview Content */ = {
@@ -176,9 +176,9 @@
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
-		7ADED5342C26B07A000826E0 /* Weather Alerts */ = {
+		7ADED5342C26B07A000826E0 /* WeatherAlerts */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 7ADED5432C26B07B000826E0 /* Build configuration list for PBXNativeTarget "Weather Alerts" */;
+			buildConfigurationList = 7ADED5432C26B07B000826E0 /* Build configuration list for PBXNativeTarget "WeatherAlerts" */;
 			buildPhases = (
 				7ADED5312C26B07A000826E0 /* Sources */,
 				7ADED5322C26B07A000826E0 /* Frameworks */,
@@ -190,9 +190,9 @@
 			dependencies = (
 				7ADED55F2C26B12C000826E0 /* PBXTargetDependency */,
 			);
-			name = "Weather Alerts";
-			productName = "Weather Alerts";
-			productReference = 7ADED5352C26B07A000826E0 /* Weather Alerts.app */;
+			name = WeatherAlerts;
+			productName = "WeatherAlerts";
+			productReference = 7ADED5352C26B07A000826E0 /* WeatherAlerts.app */;
 			productType = "com.apple.product-type.application";
 		};
 		7ADED54A2C26B12C000826E0 /* Model */ = {
@@ -231,7 +231,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 7ADED5302C26B07A000826E0 /* Build configuration list for PBXProject "Weather Alerts" */;
+			buildConfigurationList = 7ADED5302C26B07A000826E0 /* Build configuration list for PBXProject "WeatherAlerts" */;
 			compatibilityVersion = "Xcode 14.0";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -244,7 +244,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				7ADED5342C26B07A000826E0 /* Weather Alerts */,
+				7ADED5342C26B07A000826E0 /* WeatherAlerts */,
 				7ADED54A2C26B12C000826E0 /* Model */,
 			);
 		};
@@ -440,7 +440,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_ASSET_PATHS = "\"Weather Alerts/Preview Content\"";
+				DEVELOPMENT_ASSET_PATHS = "\"WeatherAlerts/Preview Content\"";
 				DEVELOPMENT_TEAM = CVJFT22U4N;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -471,7 +471,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_ASSET_PATHS = "\"Weather Alerts/Preview Content\"";
+				DEVELOPMENT_ASSET_PATHS = "\"WeatherAlerts/Preview Content\"";
 				DEVELOPMENT_TEAM = CVJFT22U4N;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -569,7 +569,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		7ADED5302C26B07A000826E0 /* Build configuration list for PBXProject "Weather Alerts" */ = {
+		7ADED5302C26B07A000826E0 /* Build configuration list for PBXProject "WeatherAlerts" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				7ADED5412C26B07B000826E0 /* Debug */,
@@ -578,7 +578,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		7ADED5432C26B07B000826E0 /* Build configuration list for PBXNativeTarget "Weather Alerts" */ = {
+		7ADED5432C26B07B000826E0 /* Build configuration list for PBXNativeTarget "WeatherAlerts" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				7ADED5442C26B07B000826E0 /* Debug */,
